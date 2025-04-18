@@ -1,0 +1,88 @@
+/* تنسيق الناف بار */
+nav {
+  margin-top: 1%;
+  background-color: #b1d2f3;
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  position: fixed; /* تثبيت النافبار في المكان */
+  top: 2rem; /* تحديد المسافة من أعلى الصفحة */
+  width: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  transition: top 0.3s ease;
+}
+
+/* تنسيق القوائم */
+ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* تنسيق الروابط */
+.nav-link {
+  text-decoration: none;
+  color: #051d40;
+  font-weight: 600;
+  font-size: large;
+  position: relative;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: white;
+  bottom: 0;
+  left: 50%;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.nav-link.active {
+  color: #fff; /* تثبيت اللون الأبيض */
+}
+
+.nav-link.active::after {
+  width: 100%; /* تثبيت الخط الأبيض تحت النص */
+  left: 0;
+}
+
+/* تنسيق اللوقو بيان */
+.logo-container {
+  position: fixed;
+  top: 3rem; /* نفس ارتفاع صورة البروفايل */
+  right: 2rem;
+  transition: top 0.3s ease;
+}
+
+.logo {
+  width: 90px;
+  height: auto;
+}
+
+.logo:hover {
+  transform: scale(1.1); /* تكبير بسيط عند تمرير الماوس */
+}
+
+html,
+body {
+  height: 100%;
+  overflow: auto; /* تأكدي أنه ليس hidden */
+}

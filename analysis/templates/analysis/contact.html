@@ -1,0 +1,357 @@
+{% extends 'analysis/base.html' %}
+{% load static %}
+{% block title %}
+Contact Us
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+       (function(){
+          emailjs.init({
+            publicKey: "WcXnsYvf6ysEeyzxI",
+          });
+       })();
+    </script>
+
+    <script src="{% static 'js/sand.js' %}"></script>
+{% endblock %}
+{% block style %}
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+    nav {
+      margin-top: 1%;
+      background-color: #b1d2f3;
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      position: fixed;
+      top: 2rem;
+      width: 70%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 6px 6px rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      transition: top 0.3s ease;
+      font-weight: 600;
+    }
+    ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: #051d40;
+      font-size: large;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: white;
+      bottom: 0;
+      left: 50%;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    .nav-link:hover {
+      color: #fff;
+    }
+    .nav-link.active {
+      color: #fff;
+    }
+    .nav-link.active::after {
+      width: 100%;
+      left: 0;
+    }
+    .logo-container {
+      position: fixed;
+      top: 3rem;
+      right: 2rem;
+      transition: top 0.3s ease;
+    }
+    .logo {
+      width: 90px;
+      height: auto;
+    }
+    .logo:hover {
+      transform: scale(1.1);
+    }
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Raleway', sans-serif;
+    }
+    .content {
+        padding: 150px 20px;
+    }
+    body {
+        display: grid;
+        height: 50%;
+        width: 100%;
+        place-items: center;
+        background: -webkit-linear-gradient(left, #5483B3,#7DA0C4,#d6e8ee);
+    }
+    .contact-header {
+        width: 100%;
+        width: 100%;
+        max-width: 800px;
+        padding: 20px;
+        text-align: center;
+        font-size: 40px;
+        color: #002a5b;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+    .contact-container {
+     border-radius: 10px;
+      width: 550px;
+      max-width: 350px;
+      background: #fff;
+      padding: 30px;
+      box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+      margin-bottom: 20px; /* إضافة مسافة بين الفورم والفوتر */
+    }
+    .contact-container input,
+    .contact-container textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        height: 100%;
+        outline: none;
+        padding-left: 15px;
+        border-radius: 5px;
+        border: 1px solid lightgrey;
+        border-bottom-width: 2px;
+        font-size: 17px;
+    }
+    .contact-container input:focus,
+    .contact-container textarea:focus {
+        border-color: #051D40; /* تغيير لون الحدود عند النقر */
+        box-shadow: 0 0 5px #051D40(0, 123, 255, 0.5); /* تأثير ظل خفيف */
+        transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* تأثير سلس */
+    }
+    .contact-container button {
+        width: 50%; /* Smaller width */
+        padding: 10px; /* Smaller padding */
+        background: -webkit-linear-gradient(left, #5483B3,#7DA0C4,#aed5e2);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    .contact-container button:hover {
+        transform: scale(1.05); /* تكبير الزر قليلاً */
+    }
+    label {
+        display: block;
+        text-align: left;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+    .active {
+    position: relative;
+    }
+    a.active {
+    color: white; /* Makes the active link white */
+    }
+    .footer {
+        width: 100%; /* يجعل الفوتر يمتد على كامل العرض */
+        background: -webkit-linear-gradient(left, #5483B3,#7DA0C4,#d6e8ee); /* لون خلفية الفوتر ثابت */
+        color: white !important; /* لون النصوص ثابت */
+        padding: 20px; /* حشوة داخلية */
+        text-align: center; /* محاذاة النص في الوسط */
+        margin-top: auto; /* دفع الفوتر للأسفل عند الحاجة */
+        font-size: 16px !important; /* حجم الخط ثابت */
+    }
+    .footer-link {
+        text-decoration: none; /* إزالة الخط السفلي */
+        color: white !important; /* لون النص الأساسي ثابت */
+        font-size: 16px !important; /* حجم الخط ثابت */
+        transition: color 0.3s; /* تأثير تدريجي عند تغيير اللون */
+    }
+    .footer-link:hover {
+        color: #4a90e2 !important; /* لون أزرق عند تمرير الماوس */
+    }
+    .footer-email {
+        margin-top: 10px; /* مسافة علوية */
+        font-size: 16px !important; /* حجم الخط ثابت */
+        color: white !important; /* لون النص ثابت */
+    }
+    .footer-copyright {
+        font-size: 16px !important; /* حجم الخط ثابت */
+        color: #476c97  !important; /* لون النص ثابت */
+    }
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .modal-content {
+        background: white;
+        padding: 20px; /* زيادة المسافة داخل النافذة */
+        border-radius: 8px;
+        text-align: center;
+        width: 500px; /* زيادة العرض */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 80%; /* العرض الأقصى على الشاشات الصغيرة */
+    }
+    .modal-content p {
+        margin-bottom: 30px; /* زيادة المسافة أسفل النص */
+        font-size: 18px; /* تكبير حجم الخط */
+        color: #333;
+        white-space: nowrap; /* يجعل النص في سطر واحد */
+        overflow: hidden; /* لمنع النص من الخروج عن حدود العنصر */
+        text-overflow: ellipsis; /* إضافة نقاط الحذف إذا كان النص طويل */
+    }
+    .modal-buttons {
+        display: flex;
+        justify-content: center; /* لضبط الزر في المنتصف */
+        gap: 20px;
+    }
+    button {
+        padding: 15px 30px; /* تكبير حجم الزر */
+        border: none;
+        background-color: #051D40;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #4a90e2;
+    }
+    button:focus {
+        outline: none;
+        background-color: #4a90e2;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+<nav id="navbar">
+    <ul
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0;
+        list-style: none;
+      "
+    >
+      <li
+        style="
+          flex-grow: 1;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        {% if user.is_authenticated %}
+              <a href="{% url 'profile' %}" class="nav-link"  style="display: flex; align-items: center;">
+                  <img id="navbarProfilePicture" src="{% if person.image %}{{ person.image.url }}{% else %}{% static 'assets/img/a.pnge.png' %}{% endif %}" alt="Profile Picture"
+                  style="width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; object-fit: cover;">
+                  <span>Profile</span>
+              </a>
+          {% else %}
+              <a href="{% url 'login' %}" class="nav-link"  style="display: flex; align-items: center;">
+                  <span>Login</span>
+              </a>
+          {% endif %}
+      </li>
+      <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <a href="{% url 'history' %}" class="nav-link" style="display: flex; align-items: center;">
+            <span>History</span>
+        </a>
+      </li>
+      <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <a href="{% url 'upload' %}" class="nav-link" style="display: flex; align-items: center;">
+            <span>Upload File</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+    <div id="logo-container" class="logo-container">
+        <img src="{% static 'assets/img/newbayan.png' %}" alt="Bayan Logo" class="logo">
+    </div>
+    <main class="content">
+        <div class="contact-header">
+            Message Form
+        </div>
+
+        <center>
+            <div class="contact-container">
+
+                <form action="#" method="POST">
+                    <input type="text" id="name" name="name" placeholder="Your name" required>
+                    <input type="email" id="email" name="email" placeholder="Your email" required>
+                    <input type="text" id="subject" name="subject" placeholder="Your subject" required>
+                    <textarea id="message" name="message" rows="4" placeholder="Your message" required></textarea>
+                    <button type="submit" onclick="event.preventDefault(); sendMail();">Submit</button>
+                </form>
+                <div id="errorMessage" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <p> Please fill out all fields before sending the message!</p>
+                        <div class="modal-buttons">
+                            <button id="okButton">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </center>
+    </main>
+
+    {% include 'analysis/footer.html' %}
+
+    <script>
+    window.onscroll = function() {
+    if (window.pageYOffset <= 2 * 16) {
+        document.getElementById("navbar").style.top = "2rem";
+        document.getElementById("logo-container").style.top = "3rem";
+    } else {
+        document.getElementById("navbar").style.top = "-10rem"; // إخفاء الشريط العلوي عند التمرير لأسفل
+        document.getElementById("logo-container").style.top = "-10rem"; // إخفاء اللوقو عند التمرير لأسفل
+    }
+}
+
+        function toggleTeamList() {
+            var list = document.getElementById("team-list");
+            var arrow = document.getElementById("arrow");
+            var isVisible = list.style.display === "block";
+            list.style.display = isVisible ? "none" : "block";
+            arrow.style.transform = isVisible ? "rotate(0deg)" : "rotate(180deg)";
+        }
+
+
+        function toggleSection(id) {
+        var section = document.getElementById(id);
+        if (section.style.display === "none") {
+            section.style.display = "block";
+        } else {
+            section.style.display = "none";
+        }
+    }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Bootstrap CSS (inside <head>) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS (before </body>) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+      <style>
+            @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap");
+            html {
+                height: 100%;
+                overflow: auto;
+            }
+            * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Raleway", sans-serif;
+            }
+            body {
+            height: 50%;
+            width: 100%;
+            place-items: center;
+            background: -webkit-linear-gradient(left, #5483b3, #7da0c4, #d6e8ee);
+            }
+            ::selection {
+            background: #617b7b;
+            color: #fff;
+            }
+
+
+            .wrapper {
+            /* overflow: hidden; */
+            /* max-width: 350px; */
+            background: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            }
+            /* .wrapper .title-text {
+            display: flex;
+            width: 200%;
+            }
+            .wrapper .title {
+            width: 50%;
+            font-size: 30px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            } */
+            /* .wrapper .slide-controls {
+            /*  
+            position: relative;
+            display: flex;
+            height: 40px;
+            width: 100%;
+            overflow: hidden;
+            margin: 3px 0 1px 0;
+            justify-content: space-between;
+            border: 1px solid lightgrey;
+            border-radius: 5px;
+            }
+            .slide-controls .slide {
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 48px;
+            cursor: pointer;
+            z-index: 1;
+            transition: all 0.6s ease;
+            }
+            .slide-controls label.signup {
+            color: #000;
+            }
+            /* السلايد من الاعل 
+            .slide-controls .slider-tab {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            left: 0;
+            z-index: 0;
+            border-radius: 5px;
+            background: -webkit-linear-gradient(left, #5483b3, #7da0c4, #aed5e2);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            } */
+            input[type="radio"] {
+            display: none;
+            }
+            #signup:checked ~ .slider-tab {
+            left: 50%;
+            }
+            #signup:checked ~ label.signup {
+            /* لونه عند الاختيار */
+            color: #fff;
+            cursor: default;
+            user-select: none;
+            }
+            #signup:checked ~ label.login {
+            /*لونه قبل الاختيار  */
+            color: #000;
+            }
+            #login:checked ~ label.signup {
+            color: #000;
+            }
+            #login:checked ~ label.login {
+            cursor: default;
+            user-select: none;
+            }
+            .wrapper .form-container {
+            width: 100%;
+            }
+            .form-container .form-inner {
+            display: flex;
+            width: 100%;
+            }
+            .form-container .form-inner form {
+            width: 100%;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            }
+            .form-inner form .field {
+            /* عرض ارتفاع وتباعد */
+            height: 40px;
+            width: 100%;
+            margin-top: 20px;
+            margin-right: 15px;
+            }
+            .form-inner form .field input {
+            /* عرض */
+            height: 100%;
+            width: 100%;
+            outline: none;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-radius: 5px;
+            border: 1px solid lightgrey;
+            border-bottom-width: 2px;
+            font-size: 17px;
+            transition: all 0.3s ease;
+            }
+            .form-inner form .field input:focus {
+            /* لون الاطراف */
+            border-color: #153e76;
+            }
+            .form-inner form .field input::placeholder {
+            color: #999;
+            transition: all 0.3s ease;
+            }
+            form .field input:focus::placeholder {
+            color: #b3b3b3;
+            }
+            .form-inner form .pass-link {
+            margin-top: 5px;
+            }
+            .form-inner form .signup-link {
+            text-align: center;
+            margin-top: 30px;
+            }
+            .form-inner form .pass-link a,
+            .form-inner form .signup-link a {
+            color: #a3b7f0;
+            text-decoration: none;
+            }
+            .form-inner form .pass-link a:hover,
+            .form-inner form .signup-link a:hover {
+            text-decoration: underline;
+            }
+            form .btn {
+            height: 60px;
+            width: 100%;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+            }
+            form .btn .btn-layer {
+            height: 100%;
+            width: 300%;
+            position: absolute;
+            left: -100%;
+            background: -webkit-linear-gradient(right, #5483b3, #7da0c4, #aed5e2);
+            border-radius: 5px;
+            transition: all 0.4s ease;
+            }
+            form .btn:hover .btn-layer {
+            left: 0;
+            }
+            form .btn input[type="submit"] {
+            height: 100%;
+            width: 100%;
+            z-index: 2;
+            position: relative;
+            background: none;
+            border: none;
+            color: #fff;
+            padding-left: 0;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            }
+
+            input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #051d40; /* يغيّر لون المربع عند تحديده */
+            }
+
+            .contact-header {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            text-align: center;
+            font-size: 40px;
+            color: #002a5b;
+            font-weight: bold;
+            margin: 10px 0;
+            }
+
+            .footer {
+            width: 100%; /* يجعل الفوتر يمتد على كامل العرض */
+            background: -webkit-linear-gradient(
+            left,
+            #5483b3,
+            #7da0c4,
+            #d6e8ee
+            ); /* لون خلفية الفوتر ثابت */
+            color: white; /* لون النصوص ثابت */
+            padding: 20px; /* حشوة داخلية */
+            text-align: center; /* محاذاة النص في الوسط */
+            margin-top: auto; /* دفع الفوتر للأسفل عند الحاجة */
+            font-size: 16px; /* حجم الخط ثابت */
+            bottom: 0;
+            }
+
+            /* تصميم الروابط داخل الفوتر */
+            .footer-link {
+            text-decoration: none; /* إزالة الخط السفلي */
+            color: white; /* لون النص الأساسي ثابت */
+            font-size: 16px; /* حجم الخط ثابت */
+            transition: color 0.3s; /* تأثير تدريجي عند تغيير اللون */
+            }
+
+            /* تأثير تغيير اللون عند تمرير الماوس */
+            .footer-link:hover {
+            color: #4a90e2; /* لون أزرق عند تمرير الماوس */
+            }
+
+            /* تصميم البريد الإلكتروني */
+            .footer-email {
+            margin-top: 10px; /* مسافة علوية */
+            font-size: 16px; /* حجم الخط ثابت */
+            color: white; /* لون النص ثابت */
+            }
+
+            /* تصميم حقوق الملكية */
+            .footer-copyright {
+            font-size: 16px; /* حجم الخط ثابت */
+            color: #476c97; /* لون النص ثابت */
+            }
+
+            header {
+            width: 100%;
+            background-color: #051d40;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            justify-content: space-between;
+            }
+
+            header nav {
+            display: flex;
+            gap: 20px;
+            margin-left: 10px;
+            }
+
+            header nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            }
+
+            header nav a:hover {
+            text-decoration: underline;
+            }
+
+            .google-login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: -webkit-linear-gradient(left, #5483b3, #7da0c4, #aed5e2);
+            color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            transition: 0.3s;
+            width: 287px;
+            text-align: center;
+            }
+            .google-login-btn i {
+            font-size: 20px;
+            margin-right: 10px;
+            color: #051d40; /* لون شعار Google */
+            }
+
+
+            .modal-content {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border: none;
+    text-align: center;
+}
+
+.modal-body {
+    font-size: 18px;
+    color: #333;
+}
+
+.modal-body button {
+    background-color: #051D40;
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-body button:hover {
+    background-color: #4a90e2;
+}
+
+
+            
+            
+      </style>
+  </head>
+  <body>
+    {% if messages %}
+    <div class="modal fade" id="thankYouModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               
+                <div class="modal-body" style="text-align: center;">
+                    There are error when register a new user, please check data you entered.<br> <br>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >OK</button>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+    {% if show_modal %}
+    <script>
+    const myModal = new bootstrap.Modal(document.getElementById('thankYouModal'));
+    window.addEventListener('load', () => {
+        myModal.show();
+    });
+    </script>
+    {% endif %}
+    {% endif %}
+    <div class="contact-header" style="margin-top: 10%; ">
+        Welcome to Bayan
+    </div>
+    <div class="wrapper" style="margin-bottom: 5%;">
+       <div class="form-container" >
+           
+            <div class="form-inner" style="width: 250px;">
+             <form action="{% url 'register' %}" method="POST" class="signup">
+                {% csrf_token %}
+                {{  form.as_p }}
+                <div class="btn">
+                   <div class="btn-layer"></div>
+                   <input type="submit" value="SignUp">
+                </div>
+             </form>
+            </div>
+       </div>
+    </div>
+
+    <script src="{% static 'js/style.js' %}"></script>
+
+    <footer class="footer">
+        <div>
+            <a href="{% url 'about' %}" class="footer-link" title="About Bayan">About Bayan</a>
+            <span>|</span>
+            <a href="{% url 'contact' %}" class="footer-link" title="Contact Us">Contact Us</a>
+        </div>
+        <p class="footer-email">
+            Email: <a href="mailto:info@bayan.com" class="footer-link">bayan.contact.team@gmail.com</a>
+        </p>
+        <p class="footer-copyright">©️2025, Made with love in KSA by Creative team at UQU</p>
+    </footer>
+  </body>
+</html>

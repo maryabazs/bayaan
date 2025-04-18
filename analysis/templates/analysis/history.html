@@ -1,0 +1,409 @@
+{% extends 'analysis/base.html' %} {% load static %} {% block title %} History
+{% endblock %} {% block style %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap");
+  nav {
+    margin-top: 1%;
+    background-color: #b1d2f3;
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    position: fixed;
+    top: 2rem;
+    width: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    transition: top 0.3s ease;
+  }
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .nav-link {
+    text-decoration: none;
+    color: #051d40;
+    font-weight: 600;
+    font-size: large;
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: white;
+    bottom: 0;
+    left: 50%;
+    transition: all 0.3s ease;
+  }
+  .nav-link:hover::after {
+    width: 100%;
+    left: 0;
+  }
+  .nav-link:hover {
+    color: #fff;
+  }
+  .nav-link.active {
+    color: #fff;
+  }
+  .nav-link.active::after {
+    width: 100%;
+    left: 0;
+  }
+  .logo-container {
+    position: fixed;
+    top: 3rem;
+    right: 2rem;
+    transition: top 0.3s ease;
+  }
+  .logo {
+    width: 90px;
+    height: auto;
+  }
+  .logo:hover {
+    transform: scale(1.1);
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Raleway", sans-serif;
+  }
+  body {
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8fbfe;
+    color: #051d40;
+    padding-top: 170px;
+  }
+  .separator {
+    width: 1px;
+    height: 20px;
+    background-color: white;
+    margin: 0 10px;
+  }
+  .profile-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 15px; /* Space between profile icon and logo */
+  }
+  .bayan2logo {
+    width: 70px;
+    height: auto;
+    max-height: 90px;
+    pointer-events: none; /* لجعل الصورة غير قابلة للتفاعل */
+  }
+  .container {
+    flex: 1;
+    padding: 20px;
+    text-align: left;
+  }
+  h1 {
+    font-size: 24px;
+    color: #051d40;
+    margin-bottom: 20px;
+  }
+  .history-table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    box-shadow: 0 2px 5px rgba(251, 250, 250, 0.1);
+  }
+  .title {
+    font-size: 36px;
+    font-variant: normal;
+    font-family: "Lobster", "Bangers", "Oswald", "Roboto", sans-serif;
+    font-stretch: ultra-expanded;
+    color: #051d40;
+    text-align: center;
+    margin: 50px 0 30px;
+  }
+  .history-table th,
+  .history-table td {
+    border: 1px solid #dddddd00;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+  }
+  .history-table th {
+    background-color: #051d40;
+    color: #fff;
+  }
+  .history-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  .history-table a {
+    color: #051d40;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    text-align: center;
+    color: #051d40;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  th,
+  td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #abb8c6;
+  }
+  th {
+    background-color: #7ea1c8;
+    color: #051d40;
+  }
+  tr:nth-child(even) {
+    background-color: #f4f6f8;
+  }
+  tr:hover {
+    background-color: #e0e0e0;
+  }
+  .no-records {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+  }
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  .modal-content {
+    background: white;
+    padding: 20px; /* زيادة المسافة داخل النافذة */
+    border-radius: 8px;
+    text-align: center;
+    width: 500px; /* زيادة العرض */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 80%; /* العرض الأقصى على الشاشات الصغيرة */
+  }
+  .modal-content p {
+    margin-bottom: 30px; /* زيادة المسافة أسفل النص */
+    font-size: 18px; /* تكبير حجم الخط */
+    color: #333;
+    white-space: nowrap; /* يجعل النص في سطر واحد */
+    overflow: hidden; /* لمنع النص من الخروج عن حدود العنصر */
+    text-overflow: ellipsis; /* إضافة نقاط الحذف إذا كان النص طويل */
+  }
+  .modal-buttons {
+    display: flex;
+    justify-content: center; /* لضبط الزر في المنتصف */
+    gap: 20px;
+  }
+  button {
+    padding: 15px 30px; /* تكبير حجم الزر */
+    border: none;
+    background-color: #051d40;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #4a90e2;
+  }
+  button:focus {
+    outline: none;
+    background-color: #4a90e2;
+  }
+  .profile-title {
+    margin-top: 5px;
+    color: #051d40;
+    font-size: 2rem;
+  }
+  .profile-title {
+    margin-left: 35px;
+  }
+  .footer {
+    width: 100%;
+    background-color: #051d40 !important;
+    color: white !important;
+    padding: 20px;
+    text-align: center;
+    margin-top: 200px;
+    font-size: 16px !important;
+  }
+  .footer-link {
+    text-decoration: none;
+    color: white !important;
+    font-size: 16px !important;
+    transition: color 0.3s;
+  }
+  .footer-link:hover {
+    color: #4a90e2 !important;
+  }
+  .footer-email {
+    margin-top: 10px;
+    font-size: 16px !important;
+    color: white !important;
+  }
+  .footer-copyright {
+    font-size: 16px !important;
+    color: #7ea1c8 !important;
+  }
+</style>
+{% endblock %} {% block content %}
+<nav id="navbar">
+  <ul
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0;
+      list-style: none;
+    "
+  >
+    <li
+      style="
+        flex-grow: 1;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="nav-link"  style="display: flex; align-items: center;">
+                <img id="navbarProfilePicture" src="{% if person.image %}{{ person.image.url }}{% else %}{% static 'assets/img/a.pnge.png' %}{% endif %}" alt="Profile Picture"
+                style="width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; object-fit: cover;">
+                <span>Profile</span>
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="nav-link"  style="display: flex; align-items: center;">
+                <span>Login</span>
+            </a>
+        {% endif %}
+    </li>
+    <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+      <a href="{% url 'history' %}" class="nav-link active" style="display: flex; align-items: center;">
+          <span>History</span>
+      </a>
+    </li>
+    <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+      <a href="{% url 'upload' %}" class="nav-link" style="display: flex; align-items: center;">
+          <span>Upload File</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<div id="logo-container" class="logo-container">
+  <img
+    src="{% static 'assets/img/newbayan.png' %}"
+    alt="Bayan Logo"
+    class="logo"
+  />
+</div>
+<h1 class="title">Analysis History</h1>
+<div class="container">
+  {% if histories %}
+  <table>
+    <thead>
+      <tr>
+        <th>File Name</th>
+        <th>File Type</th>
+        <th>File Size (KB)</th>
+        <th>Upload Date</th>
+        <th>Download PDF</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in histories %}
+      <tr>
+        <td>{{ record.file_name }}</td>
+        <td>{{ record.type }}</td>
+        <td>{{ record.size }}</td>
+        <td>{{ record.uploaded }}</td>
+        <td><a href="{% url 'download_pdf' history_id=record.id %}">Download</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="no-records">No Analysis history yet, go to Upload File</p>
+  {% endif %}
+</div>
+<div id="confirmationModal" class="modal" style="display: none">
+  <div class="modal-content">
+    <p>Please upload a file before going to the Dashboard⚠️.</p>
+    <div class="modal-buttons">
+      <button id="okButton">OK</button>
+    </div>
+  </div>
+</div>
+{% include 'analysis/footer.html' %}
+<script>
+  window.onscroll = function () {
+    if (window.pageYOffset <= 2 * 16) {
+      document.getElementById("navbar").style.top = "2rem";
+      document.getElementById("logo-container").style.top = "3rem";
+    } else {
+      document.getElementById("navbar").style.top = "-10rem";
+      document.getElementById("logo-container").style.top = "-10rem";
+    }
+  };
+  const files = JSON.parse(localStorage.getItem("files")) || [];
+  const tableBody = document.querySelector("#history-table tbody");
+  files.forEach((file) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${file.name}</td>
+        <td>${file.date}</td>
+        <td>${file.type}</td>
+        <td>${file.size}</td>
+        <td><a href="${file.link}" download>Download</a></td>
+    `;
+    tableBody.appendChild(row);
+  });
+  document
+    .getElementById("dashboardLink")
+    .addEventListener("click", function (event) {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput ? fileInput.files.length : 0;
+      if (file === 0) {
+        event.preventDefault();
+        document.getElementById("confirmationModal").style.display = "flex";
+        document
+          .getElementById("okButton")
+          .addEventListener("click", function () {
+            document.getElementById("confirmationModal").style.display = "none";
+          });
+      }
+    });
+</script>
+{% endblock %}

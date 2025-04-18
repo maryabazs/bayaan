@@ -1,0 +1,407 @@
+{% extends 'analysis/base.html' %}
+{% load static %}
+{% block title %}
+Upload File
+{% endblock %}
+{% block script %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+{% block style %}
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+    nav {
+        margin-top: 1%;
+        background-color: #b1d2f3;
+        backdrop-filter: blur(10px);
+        padding: 1rem;
+        position: fixed;
+        top: 2rem;
+        width: 70%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 6px 6px rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        transition: top 0.3s ease;
+    }
+    ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+    .nav-link {
+        text-decoration: none;
+        color: #051d40;
+        font-weight: 600;
+        font-size: large;
+        position: relative;
+        padding: 5px 0;
+        transition: color 0.3s ease;
+    }
+    .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: white;
+        bottom: 0;
+        left: 50%;
+        transition: all 0.3s ease;
+    }
+    .nav-link:hover::after {
+        width: 100%;
+        left: 0;
+    }
+    .nav-link:hover {
+        color: #fff;
+    }
+    .nav-link.active {
+        color: #fff;
+    }
+    .nav-link.active::after {
+        width: 100%;
+        left: 0;
+    }
+    .logo-container {
+      position: fixed;
+      top: 3rem;
+      right: 2rem;
+      transition: top 0.3s ease;
+    }
+    .logo {
+      width: 90px;
+      height: auto;
+    }
+    .logo:hover {
+      transform: scale(1.1);
+    }
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Raleway', sans-serif;
+    }
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #f8fbfe;
+        padding-top: 150px;
+        overflow-x: hidden;
+    }
+    .upload-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #7ea1c8;
+            color: #F2F9FF;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+    label.upload-button {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+    input[type="file"] {
+        display: none;
+    }
+    .upload-button:hover {
+        background-color: #051D40;
+    }
+    .label-browse {
+        background-color: #7ea1c8;
+        color: #F2F9FF;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .label-browse:hover {
+        background-color: #051D40;
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .upload-container {
+        text-align: center;
+        border: 2px dashed #ABB8C6;
+        border-radius: 8px;
+        padding: 20px;
+        background-color: #F2F9FF;
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        position: relative;
+    }
+    .title {
+        font-size: 36px;
+        font-variant: normal;
+        font-family: 'Lobster', 'Bangers', 'Oswald', 'Roboto', sans-serif;
+        font-stretch: ultra-expanded;
+        color: #051D40;
+        text-align: center;
+        margin: 50px 0 30px;
+    }
+    select {
+        width: 100%;
+        padding: 12px 20px;
+        margin-top: 10px;
+        border-radius: 8px;
+        border: 1px solid #244467;
+        background-color: #F2F9FF;
+        font-size: 16px;
+        color: #30306e;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    select:hover,
+    select:focus {
+        border-color: #7ea1c8;
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .select-wrapper {
+        position: relative;
+        width: 100%;
+    }
+    .select-wrapper::after {
+        content: "▼";
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        color: #3d6795;
+        pointer-events: none;
+    }
+    label {
+        font-size: 14px;
+        color: #747f8a;
+    }
+    .label-csv {
+        font-size: 16px;
+        color: #557798;
+        margin-top: 10px;
+    }
+    .label-browse {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        background-color: #7ea1c8;
+        color: #F2F9FF;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    i {
+        margin-left: 8px;
+    }
+    .label-browse:hover {
+        background-color: #051D40;
+    }
+    video {
+        width: 600px;  /* نفس عرض الفيديو */
+        height: 360px;  /* نفس ارتفاع الفيديو */
+        border: 3px solid #7ea1c8; /* حدود خفيفة بلون أزرق */
+        border-radius: 20px; /* زوايا ناعمة */
+        box-sizing: border-box; /* يضمن أن الحدود تبقى ضمن حجم العنصر */
+    }
+    .video-container {
+display: flex;
+justify-content: center;  /* التوسيط أفقيًا */
+align-items: center;  /* التوسيط عموديًا */
+height: 100vh;  /* جعل الارتفاع بارتفاع الشاشة */
+width: 100%;
+margin-top: -100px; /* تعديل المسافة حسب الحاجة */
+position: relative; /* لضبط تموضع العناصر داخله */
+
+}   .video-text {
+position: absolute;
+top: 86px; /* تحديد المسافة العلوية */
+left: 50%; /* توسيط النص أفقيًا */
+transform: translateX(-50%); /* ضبط التوسيط */
+color: #557798;
+padding: 45px; /* بعد النص عن الفيديو */
+border-radius: 8px;
+font-size: 18px;
+text-align: center;
+}
+    .loader {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #7ea1c8; /* لون التحميل */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        display: none; /* إخفاؤها بشكل افتراضي */
+        margin: 20px auto;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .footer {
+        width: 100%;
+        background-color: #051D40 !important;
+        color: white !important;
+        padding: 20px;
+        text-align: center;
+        margin-top: 60px;
+        font-size: 16px !important;
+    }
+    .footer-link {
+        text-decoration: none;
+        color: white !important;
+        font-size: 16px !important;
+        transition: color 0.3s;
+    }
+    .footer-link:hover {
+        color: #4a90e2 !important;
+    }
+    .footer-email {
+        margin-top: 10px;
+        font-size: 16px !important;
+        color: white !important;
+    }
+    .footer-copyright {
+        font-size: 16px !important;
+        color: #7ea1c8 !important;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+<nav id="navbar">
+    <ul
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0;
+        list-style: none;
+      "
+    >
+      <li
+        style="
+          flex-grow: 1;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        {% if user.is_authenticated %}
+              <a href="{% url 'profile' %}" class="nav-link"  style="display: flex; align-items: center;">
+                  <img id="navbarProfilePicture" src="{% if person.image %}{{ person.image.url }}{% else %}{% static 'assets/img/a.pnge.png' %}{% endif %}" alt="Profile Picture"
+                  style="width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; object-fit: cover;">
+                  <span>Profile</span>
+              </a>
+          {% else %}
+              <a href="{% url 'login' %}" class="nav-link"  style="display: flex; align-items: center;">
+                  <span>Login</span>
+              </a>
+          {% endif %}
+      </li>
+      <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <a href="{% url 'history' %}" class="nav-link" style="display: flex; align-items: center;">
+            <span>History</span>
+        </a>
+      </li>
+      <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <a href="{% url 'upload' %}" class="nav-link active" style="display: flex; align-items: center;">
+            <span>Upload File</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+<div id="logo-container" class="logo-container">
+        <img src="{% static 'assets/img/newbayan.png' %}" alt="Bayan Logo" class="logo">
+    </div>
+<h1 class="title">Upload Your Customer Reviews for Sentiment Analysis</h1>
+<div class="content">
+{% if user.is_authenticated %}
+    <div>
+        <label class="label-csv">Select a Model:</label>
+        <div class="select-wrapper">
+            <select name="model" id="model">
+                <option value="CAMeL-Lab/bert-base-arabic-camelbert-da-sentiment">CAMeL-BERT</option>
+                <option value="aubmindlab/bert-large-arabertv02-twitter">AraBERT (Twitter Version)</option>
+            </select>
+        </div>
+    </div>
+    <div class="upload-container">
+        <form id="uploadForm" method="POST" enctype="multipart/form-data" action="{% url 'upload' %}">
+            {% csrf_token %}
+
+            <input type="file" name="reviews_file"  id="fileInput" accept=".csv, .xls, .xlsx" hidden>
+            <button type="button" class="upload-button" id="uploadAnalyzeButton">
+              Select EXCEL File
+            </button>
+            <div id="loader" class="loader"></div>
+            <p id="fileName" class="label-csv">Click the button to upload and analyze a file.</p>
+
+
+        </form>
+
+    </div>
+    {% else %}
+    <div class="upload-container">    
+        <p id="fileName" class="label-csv">
+            Note: <br>
+            You must log in first to be able to use <br>
+            the website and upload a file.
+        </p>
+    </div>
+    {% endif %}
+    <div class="video-container">
+        <div class="video-text" style="margin-top: 10px; margin-bottom: 0px;">A tutorial video on how to fetch the file from Salla</div>
+        <video width="600" height="360" controls autoplay muted loop style="margin-top: 0px;">
+            <source src="{% static 'assets/videos/myvideo.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+</div>
+    {% include 'analysis/footer.html' %}
+<script>
+window.onscroll = function() {
+    if (window.pageYOffset <= 2 * 16) {
+        document.getElementById("navbar").style.top = "2rem";
+        document.getElementById("logo-container").style.top = "3rem";
+    } else {
+        document.getElementById("navbar").style.top = "-10rem";
+        document.getElementById("logo-container").style.top = "-10rem";
+    }
+}
+document.getElementById("fileInput").addEventListener("change", function() {
+    document.getElementById("loader").style.display = "block";
+});
+document.getElementById("fileInput").addEventListener("change", function () {
+  if (this.files.length > 0) {
+      document.getElementById("fileName").textContent = "Selected File: " + this.files[0].name;
+      document.getElementById("uploadForm").submit(); // يرسل النموذج تلقائيًا عند اختيار الملف
+      showProcessingMessage();
+  }
+});
+document.getElementById("uploadAnalyzeButton").addEventListener("click", function () {
+  document.getElementById("fileInput").click(); // يفتح نافذة اختيار الملفات
+});
+</script>
+{% endblock %}

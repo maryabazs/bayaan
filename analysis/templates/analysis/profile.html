@@ -1,0 +1,746 @@
+{% extends 'analysis/base.html' %}
+{% load static %}
+{% block title %}
+Profile
+{% endblock %}
+{% block script %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+{% endblock %}
+{% block style %}
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+    nav {
+      margin-top: 1%;
+      background-color: #b1d2f3;
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      position: fixed;
+      top: 2rem;
+      width: 70%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 6px 6px rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      transition: top 0.3s ease;
+    }
+    ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: #051d40;
+      font-weight: 600;
+      font-size: large;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: white;
+      bottom: 0;
+      left: 50%;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    .nav-link:hover {
+      color: #fff;
+    }
+    .nav-link.active {
+      color: #fff;
+    }
+    .nav-link.active::after {
+      width: 100%;
+      left: 0;
+    }
+    .logo-container {
+      position: fixed;
+      top: 3rem;
+      right: 2rem;
+      transition: top 0.3s ease;
+    }
+    .logo {
+      width: 90px;
+      height: auto;
+    }
+    .logo:hover {
+      transform: scale(1.1);
+    }
+    *{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Raleway', sans-serif;
+}
+    body, html {
+      margin: 0;
+      padding: 0;
+      padding-top:60px;
+      height: 100%;
+    }
+    .profile-header {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+    .profile-header img {
+                border-radius: 50%;
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                cursor: pointer;
+            }
+    .title {
+        font-size: 36px;
+        font-variant: normal;
+        font-family: 'Lobster', 'Bangers', 'Oswald', 'Roboto', sans-serif;
+        font-stretch: ultra-expanded;
+        color: #051D40;
+        text-align: center;
+        margin: 85px 0 30px;
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .section {
+                display: flex;
+                justify-content: space-between;
+                gap: 20px;
+                padding-right: 5%;
+                padding-left: 5%;
+            }
+    .card {
+                flex: 1;
+                background: #F7F7F7;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+    .card h3 {
+                margin-bottom: 10px;
+                font-size: 1.2rem;
+                color: #4c5563;
+            }
+    hr {
+                border: none;
+                height: 1px;
+                background-color: #bebaba;
+                margin: 20px 0;
+            }
+    h4 {
+                color: #9e9e9e;
+                font-weight: normal;
+            }
+    p {
+                color: #808080;
+            }
+    .profile-title {
+                margin-top: 60px;
+                margin-left: 540px;
+                color: #051D40;
+                font-size: 2rem;
+            }
+    .edit-icon {
+      cursor: pointer;
+      color: #051D40;
+      font-size: 1.5em;
+    }
+    [contenteditable="true"] {
+      border: 1px solid #ccc;
+      padding: 2px;
+
+
+    }
+    .profile-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+    .profile-info {
+                flex-grow: 1; /* يملأ المساحة المتاحة */
+            }
+    .profile-image {
+                width: 50px; /* حجم الصورة */
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-left: 10px; /* مسافة بين الصورة والنص */
+            }
+    .exit-button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 18px;
+                color: red; /* اللون الأساسي */
+                transition: color 0.3s ease;
+                margin-left: 10px;
+            }
+    .exit-button:hover {
+                color: gray; /* اللون عند تمرير الماوس */
+            }
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .modal-content {
+        background: white;
+        padding: 20px; /* زيادة المسافة داخل النافذة */
+        border-radius: 8px;
+        text-align: center;
+        width: 500px; /* زيادة العرض */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 80%; /* العرض الأقصى على الشاشات الصغيرة */
+    }
+    .modal-content p {
+        margin-bottom: 30px; /* زيادة المسافة أسفل النص */
+        font-size: 18px; /* تكبير حجم الخط */
+        color: #333;
+        white-space: nowrap; /* يجعل النص في سطر واحد */
+        overflow: hidden; /* لمنع النص من الخروج عن حدود العنصر */
+        text-overflow: ellipsis; /* إضافة نقاط الحذف إذا كان النص طويل */
+    }
+    .modal-buttons {
+        display: flex;
+        justify-content: center; /* لضبط الزر في المنتصف */
+        gap: 20px;
+    }
+    button {
+        padding: 15px 30px; /* تكبير حجم الزر */
+        border: none;
+        background-color: #051D40;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #4a91e200;
+    }
+    button:focus {
+        background-color: #4a91e200;
+    }
+    .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: none; /* إخفاء النوافذ المنبثقة في البداية */
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
+    .modal-content {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                width: 400px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+    .modal-content p {
+                margin-bottom: 25px;
+                font-size: 18px;
+                color: #333;
+            }
+    .modal-buttons {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+            }
+    .ok-btn {
+                background-color: #051D40;
+                color: white;
+            }
+    .ok-btn:hover {
+                background-color: #4a90e2;
+            }
+    .save-btn {
+                background-color: #051D40;
+                /* color: white; */
+            }
+    .save-btn:hover {
+                background-color: #4a90e2;
+            }
+    .cancel-btn {
+                background-color: #cccccc;
+                color: #333;
+            }
+    .cancel-btn:hover {
+                background-color: #999999;
+            }
+    .exit-button {
+                font-size: 20px;
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+            }
+    .exit-button i {
+                color: #ee0000;
+                font-size: 24px;
+            }
+    .exit-button:hover i {
+                color: #acb6c2;
+            }
+    .container {
+        display: flex;
+        gap: 20px; /* مسافة بين البطاقات */
+        justify-content: space-between; /* توزيع المساحة بين العناصر */
+        flex-wrap: wrap; /* لجعلها تحت بعض في الشاشات الصغيرة */
+    }
+    .card {
+        flex: 1; /* كل بطاقة تأخذ نصف العرض */
+        min-width: 300px; /* منع تصغيرها أكثر من اللازم */
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .edit-icon {
+        position: relative;
+        cursor: pointer;
+        font-size: 18px;
+        margin-left: 8px;
+    }
+    .edit-icon::after {
+        content: "Edit"; /* النص الافتراضي */
+        position: absolute;
+        left: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #000;
+        color: #fff;
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    .edit-icon:hover::after {
+        opacity: 1;
+    }
+    .editing .edit-icon::after {
+        content: "Save"; /* يتغير إلى "Save" عند التعديل */
+    }
+    .editing-mode {
+        outline: none;
+        border: 1px solid blue;
+    }
+    .footer {
+        width: 100%;
+        background-color: #051D40 !important;
+        color: white !important;
+        padding: 20px;
+        text-align: center;
+        margin-top: 200px;
+        font-size: 16px !important;
+    }
+    .footer-link {
+        text-decoration: none;
+        color: white !important;
+        font-size: 16px !important;
+        transition: color 0.3s;
+    }
+    .footer-link:hover {
+        color: #4a90e2 !important;
+    }
+    .footer-email {
+        margin-top: 10px;
+        font-size: 16px !important;
+        color: white !important;
+    }
+    .footer-copyright {
+        font-size: 16px !important;
+        color: #7ea1c8 !important;
+    }
+
+    .modal-buttons button:hover {
+    background-color: #4a90e2;
+}
+
+.modal-buttons button:focus {
+    outline: none;
+    background-color: #4a90e2;
+}
+    </style>
+{% endblock %}
+{% block content %}
+<nav id="navbar">
+    <ul
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0;
+        list-style: none;
+      "
+    >
+      <li
+        style="
+          flex-grow: 1;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+              <a href="{% url 'profile' %}" class="nav-link active"  style="display: flex; align-items: center;">
+                  <img id="navbarProfilePicture" src="{% if person.image %}{{ person.image.url }}{% else %}{% static 'assets/img/a.pnge.png' %}{% endif %}" alt="Profile Picture"
+                  style="width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; object-fit: cover;">
+                  <span>Profile</span>
+              </a>
+         
+      </li>
+      <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <a href="{% url 'history' %}" class="nav-link" style="display: flex; align-items: center;">
+            <span>History</span>
+        </a>
+      </li>
+      <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <a href="{% url 'upload' %}" class="nav-link" style="display: flex; align-items: center;">
+            <span>Upload File</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+<div id="logo-container" class="logo-container">
+        <img src="{% static 'assets/img/newbayan.png' %}" alt="Bayan Logo" class="logo">
+    </div>
+
+<h1 class="title">Your Profile</h1>
+<div class="content">
+        <div class="section">
+            <div class="profile-header">
+                
+                
+                <img id="profilePicture" src="{% if person.image %}{{ person.image.url }}{% else %}{% static 'assets/img/a.pnge.png' %}{% endif %}" alt="Profile Picture" onclick="triggerFileInput()"> 
+                <input type="file" id="fileInput" style="display:none;" accept="image/*" />
+                
+                <div>
+                    <h2>{{ person.user.username }}</h2>
+                    <p>{{ person.user.email }}</p>
+                </div>
+            </div>
+
+            <div id="logoutModal" class="modal">
+                <div class="modal-content">
+                    <p>Are you sure you want to log out?</p>
+                    <div class="modal-buttons">
+                        <button class="cancel-btn" id="cancelButton">Cancel</button>
+                        <button class="ok-btn" id="exitButton">Logout</button>
+                    </div>
+                </div>
+            </div>
+            <button class="exit-button" onclick="logout()">
+                <i class="fa fa-sign-out"></i>
+            </button>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <h3>Profile Information
+                    <span class="edit-icon" onclick="toggleEditMode(this)">&#9998;</span>
+                </h3>
+                <hr>
+                <p><strong>Full Name: {{ person.user.username}}</strong></p>
+                <p><strong>Mobile: {{ person.phone}}</strong> <span id="mobile" class="editable-field empty-field" contenteditable="false"></span></p>
+                <p><strong>Email: {{ user.email }}</strong></p>
+                <p><strong>Location: {{ person.location}}</strong> <span id="location" class="editable-field empty-field" contenteditable="false"></span></p>
+                <button class="save-btn" onclick="savePerson()" id="buttonPerson" >Update and Save Profile</button>
+            </div>
+            <div class="card">
+                <h3>Merchant Information
+                    <span class="edit-icon" onclick="toggleEditMode(this)">&#9998;</span>
+                </h3>
+                <hr>
+                <p><strong>Store Name: {{ merchant.store_name}}</strong> <span id="store-name" class="editable-field empty-field" contenteditable="false"></span></p>
+                <p><strong>Store Link on Salla: {{ merchant.store_link}}</strong> <span id="store-link" class="editable-field empty-field" contenteditable="false"></span></p>
+                <p><strong>Business Category: {{ merchant.category}}</strong> <span id="business-category" class="editable-field empty-field" contenteditable="false"></span></p>
+                <p></p><br>
+                <button class="save-btn" onclick="saveMerchant()" id="buttonMerchant" >Update and Save Merchant</button>
+            </div>
+
+            <div id="successModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <p>Saved Successfully </p>
+                    <div class="modal-buttons">
+                        <button onclick="closeSuccessModal()">OK</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="loadImage(event)">
+        <div id="confirmationModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <p>Please upload a file before going to the Dashboard⚠️.</p>
+                <div class="modal-buttons">
+                    <button id="okButton">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'analysis/footer.html' %}
+<script>
+    window.onscroll = function() {
+        if (window.pageYOffset <= 2 * 16) {
+            document.getElementById("navbar").style.top = "2rem";
+            document.getElementById("logo-container").style.top = "3rem";
+        } else {
+            document.getElementById("navbar").style.top = "-10rem";
+            document.getElementById("logo-container").style.top = "-10rem";
+        }
+    }
+    function triggerFileInput() {
+        document.getElementById('fileInput').click();
+    }
+    document.getElementById('fileInput').addEventListener('change', function() {
+            let fileInput = document.getElementById('fileInput');
+            let file = fileInput.files[0];  // Get the first selected file
+            if (file) {
+
+                // Prepare the form data
+                let formData = new FormData();
+                formData.append('file', file);  // 'file' is the field name
+
+                // Submit the form via AJAX (Fetch)
+                fetch('/profile/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                }).then(res => res.json())
+                .then(data => {
+                    if( data.success ) {
+                        document.getElementById('profilePicture').src = data.image;
+                        document.getElementById('navbarProfilePicture').src = data.image;
+                    }
+                });
+                
+            }
+        }
+    );
+    function loadImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const imageURL = URL.createObjectURL(file);
+            document.getElementById('profilePicture').src = imageURL;
+            document.getElementById('navbarProfilePicture').src = imageURL;
+        }
+    }
+    function logout() {
+        // إخفاء أي نوافذ منبثقة أخرى أولاً
+        document.getElementById('logoutModal').style.display = 'flex';
+
+        // التعامل مع زر OK في نافذة الخروج
+        // document.getElementById('okButton').addEventListener('click', function() {
+        //     window.location.href = "analysis/home.html"; // التوجيه إلى الصفحة الرئيسية
+        // });
+        document.getElementById('exitButton').addEventListener('click', function() {
+            window.location.href = "{% url 'logout' %}";
+        });
+
+        // التعامل مع زر Cancel في نافذة الخروج
+        document.getElementById('cancelButton').addEventListener('click', function() {
+            document.getElementById('logoutModal').style.display = 'none'; // إغلاق نافذة الخروج
+        });
+    }
+    function savePerson() {
+    const data = {
+        phone: document.getElementById('mobile').innerText.trim(),
+        location: document.getElementById('location').innerText.trim(),
+    };
+    fetch('/save-profile/', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify(data),
+    }).then(response => response.json()).then(data => {
+        showSuccessModal();
+    });
+}
+
+    function getCSRFToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+    function saveMerchant() {
+    const data = {
+        store_name: document.getElementById('store-name').innerText.trim(),
+        store_link: document.getElementById('store-link').innerText.trim(),
+        category: document.getElementById('business-category').innerText.trim(),
+    };
+    fetch('/save-merchant/', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify(data),
+    }).then(response => response.json()).then(data => {
+        showSuccessModal();
+    });
+}
+
+function showSuccessModal() {
+    document.getElementById('successModal').style.display = 'flex';
+}
+
+function closeSuccessModal() {
+    document.getElementById('successModal').style.display = 'none';
+}
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dashboardLink = document.getElementById('dashboardLink');
+        const fileInput = document.getElementById('fileInput');
+        const modal = document.getElementById('confirmationModal');
+        const okButton = document.getElementById('okButton');
+
+        dashboardLink.addEventListener('click', function (event) {
+            const fileCount = fileInput.files.length;
+
+            if (fileCount === 0) {
+                event.preventDefault(); // منع الانتقال للـ Dashboard
+                modal.style.display = 'flex'; // عرض النافذة
+            }
+        });
+
+        // مستمع زر OK (يتم تسجيله مرة واحدة فقط)
+        okButton.addEventListener('click', function () {
+            modal.style.display = 'none'; // إغلاق النافذة عند الضغط على OK
+        });
+    });
+
+     // دالة لإظهار نافذة الخروج
+        
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const profileFields = ['#full-name', '#mobile', '#email', '#location'];
+        const merchantFields = ['#store-name', '#business-category'];
+
+        // تفحص الحقول عند التحميل
+        checkEmptyFields(profileFields);
+        checkEmptyFields(merchantFields);
+
+        // إضافة مستمع للأحداث لكل الحقول
+        [...profileFields, ...merchantFields].forEach(field => {
+            const element = document.querySelector(field);
+
+            element.addEventListener('focus', function() {
+                if (this.textContent.trim() === 'add') {
+                    this.textContent = ''; // إزالة "add" عند التركيز
+                }
+            });
+
+            element.addEventListener('input', function() {
+                checkField(this); // تحقق من الحقل أثناء الكتابة
+            });
+
+            element.addEventListener('blur', function() {
+                if (this.textContent.trim() === '') {
+                    this.textContent = 'add'; // إرجاع "add" إذا بقي الحقل فارغًا
+                }
+                updateStarVisibility(this.closest('.card')); // تحديث النجمة عند ترك الحقل
+            });
+        });
+    });
+
+    function checkEmptyFields(fields) {
+        fields.forEach(field => {
+            checkField(document.querySelector(field));
+        });
+    }
+
+    // تفعيل وضع التعديل
+    function toggleEditMode(icon) {
+        let card = icon.closest(".card"); // البحث عن البطاقة القريبة من الأيقونة
+        let fields = card.querySelectorAll(".editable-field");
+
+        let isEditing = card.classList.contains("editing"); // هل البطاقة في وضع التعديل؟
+
+        if (isEditing) {
+            // حفظ التعديلات
+            fields.forEach(field => {
+                field.setAttribute("contenteditable", "false");
+                checkField(field); // التحقق من محتوى الحقل
+            });
+            card.classList.remove("editing");
+        } else {
+            // بدء التعديل
+            fields.forEach(field => {
+                field.setAttribute("contenteditable", "true");
+                if (field.textContent.trim() === "add") {
+                    field.textContent = ""; // مسح كلمة "add"
+                }
+            });
+            card.classList.add("editing");
+        }
+        updateStarVisibility(card); // تحديث النجمة عند تفعيل التعديل
+
+    }
+
+    // التحقق من الحقل وإضافة النجمة عند الحاجة
+    function checkField(field) {
+        let card = field.closest(".card");
+        updateStarVisibility(card);
+    }
+
+    // تحديث ظهور النجمة بجانب أيقونة التعديل
+    function updateStarVisibility(card) {
+        let fields = card.querySelectorAll(".editable-field");
+        let hasEmptyField = Array.from(fields).some(field => field.textContent.trim() === "" || field.textContent.trim() === "add");
+
+        let editIcon = card.querySelector(".edit-icon");
+        let star = editIcon.querySelector(".required-star");
+
+        if (hasEmptyField) {
+            if (!star) {
+                let newStar = document.createElement("span");
+                newStar.textContent = "*";  // تغيير النجمة إلى *
+                newStar.classList.add("required-star");
+                newStar.style.color = "red";
+                newStar.style.marginLeft = "5px";
+                newStar.style.fontSize = "16px"; // يمكنك تعديل الحجم هنا حسب الحاجة
+                editIcon.appendChild(newStar);
+            }
+        } else {
+            if (star) {
+                star.remove();
+            }
+        }
+    }
+
+</script>
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+{% endblock %}

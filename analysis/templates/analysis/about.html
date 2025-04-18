@@ -1,0 +1,475 @@
+{% extends 'analysis/base.html' %}
+{% load static %}
+{% block title %}
+About Bayan
+{% endblock %}
+{% block style %}
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap");
+    nav {
+      margin-top: 1%;
+      background-color: #b1d2f3;
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      position: fixed;
+      top: 2rem; 
+      width: 70%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 6px 6px rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      transition: top 0.3s ease;
+      font-weight: 600;
+    }
+    ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: #051d40;
+      font-size: large;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s ease;
+    }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: white;
+      bottom: 0;
+      left: 50%;
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    .nav-link:hover {
+      color: #fff;
+    }
+    .nav-link.active {
+      color: #fff;
+    }
+    .nav-link.active::after {
+      width: 100%;
+      left: 0;
+    }
+    .logo-container {
+      position: fixed;
+      top: 3rem;
+      right: 2rem;
+      transition: top 0.3s ease;
+    }
+    .logo {
+      width: 90px;
+      height: auto;
+    }
+    .logo:hover {
+      transform: scale(1.1);
+    }
+    body, html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Raleway", sans-serif;
+            background-color: #f8fbfe;
+            color: #051D40;
+        }
+    .content {
+        padding: 150px 20px;
+    }
+    .about, .origin, .vision-box, .whyBayan {
+            background-color: #deebf8;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 1000px;
+            margin: 30px auto;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    .origin, .whyBayan {
+            background-color: #b1d2f3;
+            color: #051D40;
+        }
+    .section-title {
+            font-size: 25px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+    .section-text {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+    .BF {
+            font-size: 35px;
+            margin-top: 100px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+    .vision-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+    .vision-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-right: 20px;
+            object-fit: cover;
+        }
+    .extra-box {
+            background-color: #deebf8;
+            padding: 20px;
+            border-radius: 60px;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    .about:hover, .origin:hover, .vision-box:hover, .whyBayan:hover, .extra-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    .team-dropdown {
+    position: fixed;
+    top: 15px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4f91c3;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 1000;
+}
+    .team-dropdown:hover {
+    background-color: #051D40;
+}
+    .team-dropdown i {
+    margin-left: 8px;
+    transition: transform 0.3s;
+}
+    .team-members {
+    display: none;
+    position: fixed;
+    top: 65px;
+    left: 10px;
+    background-color: #deebf8;
+    color: #051D40;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 190px;
+    padding: 10px;
+    list-style: none;
+    z-index: 1000;
+}
+    .team-members span {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+    .team-members span:hover {
+    background-color: #f0f4f9;
+}
+    .team-members span:nth-child(1) i {
+            content: "👩‍💻";
+        }
+    .team-members span:nth-child(2) i {
+            content: "👩‍💻";
+        }
+    .team-members span:nth-child(3) i {
+            content: "👩‍💻";
+        }
+    .team-members span:nth-child(4) i {
+            content: "👩‍💻";
+        }
+    .team-members span:nth-child(5) i {
+            content: "👩‍💻";
+        }
+    .feature-box { 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #F4F9FF;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+    .feature-box:hover {
+    transform: translateY(-8px); /* رفع عند التمرير */
+    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.15);
+}
+    .circle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(to right, #b1d2f3, #4f91c3); /* تدرج لوني جذاب */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px;
+    margin-right: 20px;
+}
+    .feature-content {
+    flex: 1;
+}
+    .feature-content .section-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+    .feature-content .section-text {
+    font-size: 18px;
+    line-height: 1.6;
+}
+    .feature-box .circle i {
+    font-size: 45px;
+}
+    .footer {
+        width: 100%;
+        background-color: #051D40 !important;
+        color: white !important;
+        padding: 20px;
+        text-align: center;
+        margin-top: auto;
+        font-size: 16px !important;
+    }
+    .footer-link {
+        text-decoration: none;
+        color: white !important;
+        font-size: 16px !important;
+        transition: color 0.3s;
+    }
+    .footer-link:hover {
+        color: #4a90e2 !important;
+    }
+    .footer-email {
+        margin-top: 10px;
+        font-size: 16px !important;
+        color: white !important;
+    }
+    .footer-copyright {
+        font-size: 16px !important;
+        color: #7ea1c8 !important;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+<nav id="navbar">
+    <ul
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0;
+        list-style: none;
+      "
+    >
+      <li
+        style="
+          flex-grow: 1;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        {% if user.is_authenticated %}
+              <a href="{% url 'profile' %}" class="nav-link"  style="display: flex; align-items: center;">
+                  <img id="navbarProfilePicture" src="{% static 'assets/img/a.pnge.png' %}" alt="Profile Picture"
+                  style="width: 30px; height: 30px; border-radius: 50%; margin-right: 8px; object-fit: cover;">
+                  <span>Profile</span>
+              </a>
+          {% else %}
+              <a href="{% url 'login' %}" class="nav-link"  style="display: flex; align-items: center;">
+                  <span>Login</span>
+              </a>
+          {% endif %}
+      </li>
+      <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <a href="{% url 'history' %}" class="nav-link" style="display: flex; align-items: center;">
+            <span>History</span>
+        </a>
+      </li>
+      <li style="flex-grow: 1; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <a href="{% url 'upload' %}" class="nav-link" style="display: flex; align-items: center;">
+            <span>Upload File</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+    <div id="logo-container" class="logo-container">
+        <img src="{% static 'assets/img/newbayan.png' %}" alt="Bayan Logo" class="logo">
+    </div>
+
+    <div class="team-dropdown" onclick="toggleTeamList()">
+        <span>Bayan Team</span>
+        <i id="arrow" class="bi bi-chevron-down"></i>
+    </div>
+    <div id="team-list" class="team-members">
+        <span><i class="bi bi-person"></i> Salma Yasir</span>
+        <span><i class="bi bi-person"></i> Raneem Hawthan</span>
+        <span><i class="bi bi-person"></i> Wasan Labani</span>
+        <span><i class="bi bi-person"></i> Marya Bazheer</span>
+        <span><i class="bi bi-person"></i> Rawan ALHarbi</span>
+    </div>
+
+    <main class="content">
+        <section class="about">
+            <h2 class="section-title" style="font-weight: 900;">What Is Bayan?</h2>
+            <p class="section-text">
+                Bayan is an API developed using AI and NLP technologies to analyze customer opinions in Salla stores.
+                It aims to provide merchants with information about their store based on written customer comments,
+                to improve the store and enhance customer satisfaction.
+            </p>
+        </section>
+
+        <section class="origin">
+            <h2 class="section-title" style="font-weight: 900;">Where did Bayan start?</h2>
+            <p class="section-text">
+                The idea of Bayan started at Umm Al-Qura University as a university graduation project,
+                as a group we decided to do this website and named "Bayan" and
+                it was implemented to support e-commerce and the ongoing digital transformation witnessed
+                by the Kingdom of Saudi Arabia.
+            </p>
+        </section>
+
+        <section class="vision-section">
+            <div class="vision-box">
+                <img src="{% static 'assets/img/logo.png' %}" alt="Vision Logo" class="vision-logo">
+                <div class="vision-text">
+                    <h2 class="section-title" style="font-weight: 900;">Our Vision</h2>
+                    <p class="section-text">
+                        Empowering business owners in the Kingdom of Saudi Arabia to gain insights into
+                        the written feelings and preferences of their customers to make sound and
+                        data-driven decisions to improve customer experiences. We aim to bridge the gap
+                        between companies and their customers, which makes the customer realize that
+                        his opinion is heard and important.
+                    </p>
+                </div>
+            </div>
+
+            <section class="whyBayan">
+                <h2 class="section-title" style="font-weight: 900;">Why choose Bayan?</h2>
+                <p class="section-text">
+                    In today's business world, where competition is increasing and customer
+                    satisfaction is a key factor for success,
+                    Bayan emerges as a smart solution to help to understand and analyze customers'
+                    feedback accurately and efficiently.
+                    Whether you are an e-commerce store owner, product manager,
+                    or customer experience specialist, Bayan is your ideal partner
+                    to understand your customers and enhance your services based on real insights.
+                </p>
+            </section>
+        </section>
+
+
+        <h1 class="BF" style="font-weight: 900;">Bayan Features</h1>
+
+        <section class="feature-box">
+            <div class="circle">
+                <i class="bi bi-bar-chart"></i>
+            </div>
+            <div class="feature-content">
+                <h2 class="section-title" style="font-weight: 900;">Advanced Review and Feedback Analysis</h2>
+                <p class="section-text">Extract valuable insights from customer comments to understand their needs and improve your services.</p>
+            </div>
+        </section>
+
+        <section class="feature-box">
+            <div class="circle">
+                <i class="bi bi-lightning-charge-fill"></i>
+            </div>
+            <div class="feature-content">
+                <h2 class="section-title" style="font-weight: 900;">Powerful AI Technology</h2>
+                <p class="section-text">Bayan utilizes the most suitable AI techniques for sentiment analysis and review classification.</p>
+            </div>
+        </section>
+
+        <section class="feature-box">
+            <div class="circle">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div class="feature-content">
+                <h2 class="section-title" style="font-weight: 900;">Time and Effort Saving</h2>
+                <p class="section-text">No need for manual comment analysis, simply upload your feedback file, and Bayan will handle the rest.</p>
+            </div>
+        </section>
+
+        <section class="feature-box">
+            <div class="circle">
+                <i class="bi bi-clipboard2-data"></i>
+            </div>
+            <div class="feature-content">
+                <h2 class="section-title" style="font-weight: 900;">Actionable Suggestions and Recommendations</h2>
+                <p class="section-text">Receive clear insights and recommendations to help you make strategic, data-driven decisions.</p>
+            </div>
+        </section>
+
+        <section class="feature-box">
+            <div class="circle">
+                <i class="bi bi-globe"></i>
+            </div>
+            <div class="feature-content">
+                <h2 class="section-title" style="font-weight: 900;">Arabic Language Support</h2>
+                <p class="section-text">A sophisticated system capable of understanding different dialects and processing natural language with high accuracy.</p>
+            </div>
+        </section>
+
+    </main>
+
+    {% include 'analysis/footer.html' %}
+
+    <script>
+    window.onscroll = function() {
+    if (window.pageYOffset <= 2 * 16) {
+        document.getElementById("navbar").style.top = "2rem";
+        document.getElementById("logo-container").style.top = "3rem";
+    } else {
+        document.getElementById("navbar").style.top = "-10rem"; // إخفاء الشريط العلوي عند التمرير لأسفل
+        document.getElementById("logo-container").style.top = "-10rem"; // إخفاء اللوقو عند التمرير لأسفل
+    }
+}
+
+        function toggleTeamList() {
+            var list = document.getElementById("team-list");
+            var arrow = document.getElementById("arrow");
+            var isVisible = list.style.display === "block";
+            list.style.display = isVisible ? "none" : "block";
+            arrow.style.transform = isVisible ? "rotate(0deg)" : "rotate(180deg)";
+        }
+
+
+        function toggleSection(id) {
+        var section = document.getElementById(id);
+        if (section.style.display === "none") {
+            section.style.display = "block";
+        } else {
+            section.style.display = "none";
+        }
+    }
+
+    </script>
+{% endblock %}
